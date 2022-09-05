@@ -1,0 +1,36 @@
+defmodule CodebankClient.Application do
+  # See https://hexdocs.pm/elixir/Application.html
+  # for more information on OTP Applications
+  @moduledoc false
+
+  use Application
+
+  @impl true
+  def start(_type, _args) do
+    children = [
+      # Start the Ecto repository
+      CodebankClient.Repo,
+      # Start the Telemetry supervisor
+      CodebankClientWeb.Telemetry,
+      # Start the PubSub system
+      {Phoenix.PubSub, name: CodebankClient.PubSub},
+      # Start the Endpoint (http/https)
+      CodebankClientWeb.Endpoint
+      # Start a worker by calling: CodebankClient.Worker.start_link(arg)
+      # {CodebankClient.Worker, arg}
+    ]
+
+    # See https://hexdocs.pm/elixir/Supervisor.html
+    # for other strategies and supported options
+    opts = [strategy: :one_for_one, name: CodebankClient.Supervisor]
+    Supervisor.start_link(children, opts)
+  end
+
+  # Tell Phoenix to update the endpoint configuration
+  # whenever the application is updated.
+  @impl true
+  def config_change(changed, _new, removed) do
+    CodebankClientWeb.Endpoint.config_change(changed, removed)
+    :ok
+  end
+end

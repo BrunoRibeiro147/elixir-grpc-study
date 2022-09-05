@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package credit_card;
+
+service CreditCardService {
+  rpc Get(GetCreditCardRequest) returns (GetCreditCardResponse);
+}
+
+message GetCreditCardRequest {
+  string number = 1;
+}
+
+message GetCreditCardResponse {
+  CreditCard creditCard = 1;
+}
+
+message CreditCard {
+  string id = 1;
+  string name = 2;
+  string number = 3;
+  int32 expirationMonth = 4;
+  int32 expirationYear = 5;
+  int32 cvv = 6;
+  float balance = 7;
+  float limit = 8;
+}
